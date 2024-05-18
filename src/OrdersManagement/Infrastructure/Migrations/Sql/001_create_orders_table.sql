@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS Orders (
     Total INT NOT NULL,
     Fecha DATE NOT NULL,
     Estatus VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
     );

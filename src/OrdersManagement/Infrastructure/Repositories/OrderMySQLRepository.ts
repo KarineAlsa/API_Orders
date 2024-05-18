@@ -6,7 +6,7 @@ import query from "../../../Database/mysql";
 export default class UserMysqlRepository implements OrderInterface {
   async changeStatus(id: any, status: string): Promise<any> {
     let updateQuery = "UPDATE Orders SET Estatus = ? WHERE id = ?";
-    const params: any[] = [id, status];
+    const params: any[] = [status,id];
     try {
       const [result]: any = await query(updateQuery, params);
 
@@ -30,9 +30,9 @@ export default class UserMysqlRepository implements OrderInterface {
 
       return {
         id: result.insertId, 
-        Total : result.Total,
-        Fecha : result.Fecha,
-        Estatus : result.Estatus
+        Total : order.Total,
+        Fecha : order.Fecha,
+        Estatus : order.Estatus
       }
 
     } else {
