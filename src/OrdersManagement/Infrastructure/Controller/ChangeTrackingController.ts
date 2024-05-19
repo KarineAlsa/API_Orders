@@ -21,6 +21,7 @@ export default class ChangeTrackingController {
             
             let orderChanged = await this.useCase.run(Number(id),Estatus);
             if (orderChanged) {
+                
                 return response.status(200).json({data:orderChanged,message:"Pedido actualizado",success:true});
             } else {
                 response.status(400).send({

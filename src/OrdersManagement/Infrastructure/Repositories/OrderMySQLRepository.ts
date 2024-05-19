@@ -11,7 +11,8 @@ export default class UserMysqlRepository implements OrderInterface {
       const [result]: any = await query(updateQuery, params);
 
       if (result && result.affectedRows > 0) {
-        return true
+        const order = await this.getOrderById(id);
+        return order
       } else {
         throw new Error("No se pudo actualizar la orden");
       }
@@ -62,8 +63,54 @@ export default class UserMysqlRepository implements OrderInterface {
     }
   }
 
-
-
-
+  async getOrderById(id: any): Promise<any> {
+    const sql = "SELECT * FROM Orders WHERE id = ?";
+    const params: any[] = [id];
+    try {
+      const [[result]]: any = await query(sql, params);
+      if (result){
+        return result
+      }
+      else {
+        return false;
+      }
+    }
+    catch (error) {
+      return false;
+    }
+  }
+  async getQuantity(id: any): Promise<any> {
+    const sql = `
+    SELECT 
+        o.id,
+        op.product_id,
+        SUM(op.cantidad) AS total_quantity
+    FROM 
+        Orders o
+    JOIN 
+        Orders_Products op ON o.id = op.order_id
+    WHERE 
+        o.id = ?
+    GROUP BY 
+        o.id, 
+        op.product_id
+    ORDER BY 
+        o.id, 
+        op.product_id;
+`;
+    const params: any[] = [id];
+    try {
+      const [result]: any = await query(sql, params);
+      if (result){
+        return result
+      }
+      else {
+        return false;
+      }
+    }
+    catch (error) {
+      return false;
+    }
+  }
     
 }
